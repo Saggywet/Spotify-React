@@ -17,6 +17,8 @@ export const requireAdmin = async(req,res,next) => {
         if(!isAdmin){
            return res.status(403).json({message: "Unauthorized - you must be an admin" });
         }
+
+        next();
     } catch (error){
          
     }
