@@ -2,7 +2,7 @@ import { Song } from "../models/song.model";
 import { Album } from "../models/album.model";
 
 
-export const createSong = async (req,res) => {
+export const createSong = async (req,res, next) => {
     try{
         if(!req.files || !req.files.auioFile || !req.files.imageFile) {
             return res.status(400).json({ message: "Please upload all files"});
@@ -27,10 +27,12 @@ export const createSong = async (req,res) => {
         if(albumId){
             await Album.findByIdAndUpdate(albumId, {
                 $push: { song: song._id},
-            })
+            });
         }
-
+        res.status(201).json(song)
     } catch (error) {
+        console.log("Error in 'createSong'", error);
+        next(error);
 
     }
 }
